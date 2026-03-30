@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
     <div class="columns">
@@ -16,50 +15,62 @@
             <div class="input_section">
                 <div class="study_time_section">
                     <p>Study Time: </p>
-                    <select>
-                        <option>5 mins</option>
-                        <option>10 mins</option>
-                        <option>15 mins</option>
-                        <option>20 mins</option>
-                        <option>30 mins</option>
-                        <option>45 mins</option>
-                        <option>1 hr</option>
-                        <option>1.5 hrs</option>
-                        <option>2 hrs</option>
-                        <option>2.5 hrs</option>
-                        <option>3 hrs</option>
-                        <option>3.5 hrs</option>
-                        <option>4 hrs</option>
-                        <option>4.5 hrs</option>
-                        <option>5 hrs</option>
-                        <option>6 hrs</option>
-                        <option>7 hrs</option>
-                        <option>8 hrs</option>
-                        <option>9 hrs</option>
-                        <option>10 hrs</option>
-                        <option>11 hrs</option>
-                        <option>12 hrs</option>
-                    </select>
-                    <!-- Select How long you have studied -->
+                    <div class="select_study_time">0 mins</div>
+                    <div class="options_wrapper">
+                        <ul class = "options_list">
+                            <li>5 mins</li>
+                            <li>10 mins</li>
+                            <li>15 mins</li>
+                            <li>20 mins</li>
+                            <li>30 mins</li>
+                            <li>45 mins</li>
+                            <li>1 hr</li>
+                            <li>1.5 hrs</li>
+                            <li>2 hrs</li>
+                            <li>2.5 hrs</li>
+                            <li>3 hrs</li>
+                            <li>3.5 hrs</li>
+                            <li>4 hrs</li>
+                            <li>4.5 hrs</li>
+                            <li>5 hrs</li>
+                            <li>6 hrs</li>
+                            <li>7 hrs</li>
+                            <li>8 hrs</li>
+                            <li>9 hrs</li>
+                            <li>10 hrs</li>
+                            <li>11 hrs</li>
+                            <li>12 hrs</li>
+                        </ul>
+                        <!-- Select How long you have studied -->
+                    </div>
                 </div>
                 <div class="mood_section">
+                    <span></span>
                     <p>Mood:</p>
-                    <input id = "mood_input" placeholder="?" readonly>
-
-                    <div id="emojis">
-                        <span>😁</span><span>🤩</span><span>☹️</span><span>😭</span>
-                        <span>🙄</span><span>🤬</span><span>😰</span><span>😴</span>
+                    <input id = "mood_input" placeholder="❓" readonly>
+                    <span></span>
+                    <div class="emoji_list_wrapper">
+                        <ul class ="emoji_list">
+                            <li>😁</li>
+                            <li>🤩</li>
+                            <li>☹️</li>
+                            <li>😭</li>
+                            <li>🙄</li>
+                            <li>🤬</li>
+                            <li>😰</li>
+                            <li>😴</li>
+                        </ul>
                     </div>
                 </div>
                 <button class = "submit_btn">SUBMIT DATA</button>
                 <button class = "sync_btn">SYNC DATA</button>
                 <div class="to_do_list">
-                    <h3>To-Do List:</h3><br>
-                    <label><input type="checkbox">...</label><br>
-                    <label><input type="checkbox">...</label><br>
-                    <label><input type="checkbox">...</label><br>
-                    <label><input type="checkbox">...</label><br>
-                    <label><input type="checkbox">...</label>
+                    <h3>To-Do List:</h3>
+                    <label><input type="checkbox"><input type="text" placeholder="to-do"></label>
+                    <label><input type="checkbox"><input type="text" placeholder="to-do"></label>
+                    <label><input type="checkbox"><input type="text" placeholder="to-do"></label>
+                    <label><input type="checkbox"><input type="text" placeholder="to-do"></label>
+                    <label><input type="checkbox"><input type="text" placeholder="to-do"></label>
                 </div>
             </div>
         </div>

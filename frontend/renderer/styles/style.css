@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400;700&display=swap');
+:root{
+    --g1: #285A48;
+    --g2: #408A71;
+    --g3: #B0E4CC;
+}
+/* colour variables */
+
+body {
+    background-color: #d9d9d9;
+    padding: 20px 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 200;
+    font-variant-ligatures: normal;
+    color: white;
+    user-select: none;
+}
+
+.columns {
+    display: flex;
+    gap: 20px;
+    max-width: 1000;
+    margin: 0 auto;
+}
+
+.column_one {
+    flex-direction: column;
+    width: 35%;
+    display: flex;
+    gap: 20px;
+}
+
+.column_two {
+    width: 65%;
+    background-color: var(--g1);
+    border-radius: 15px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title_section {
+    background-color: var(--g1);
+    font-size: 1rem;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.input_section {
+    background-color: var(--g1);
+    padding: 25px;
+    border-radius: 15px;
+    flex-grow: 1;
+}
+
+.study_time_section {
+    position:relative;
+    display: flex;
+    justify-content: center;
+    gap:30px;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 1.6rem;
+}
+
+.select_study_time{
+    background-color: var(--g2);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    outline: none;
+    text-align: center;
+    width: 144px;
+    cursor: pointer;
+}
+
+.options_wrapper {
+    display: none;
+    position: absolute;
+    left: 96.5%;
+    top: -100%;
+    z-index: 100;
+    margin-left: 10px;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.356) ;
+}
+.options_wrapper::before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 37%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 17px 17px 17px 0;
+    border-color: transparent var(--g2) transparent transparent;
+}
+.options_list {
+    font-size: 1.4rem;
+    display: block;
+    left: 100%;
+    width: 144px;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: var(--g2);
+    border-radius: 8px;
+    list-style: none;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+}
+.options_list li {
+    padding: 7px;
+    text-align: center;
+}
+.options_list li:hover {
+    background-color: var(--g3);
+    color: var(--g1);
+    border-radius: 3px;
+}
+.options_list::-webkit-scrollbar {
+    width: 8px;
+}
+.options_list::-webkit-scrollbar-track {
+    background: var(--g2);
+    border-radius: 4px;
+}
+.options_list::-webkit-scrollbar-thumb{
+    background: var(--g3);
+    border-radius: 8px;
+}
+
+.mood_section {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap:30px;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    padding-right: 5px;
+}
+.mood_section input {
+    field-sizing: content;
+    background-color: var(--g2);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 2.2rem;
+    outline: none;
+    text-align: center;
+    min-width: 2ch;
+    cursor: pointer;
+}
+
+.emoji_list_wrapper{
+    display:none;
+    position: absolute;
+    left: 71%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    margin-left: 10px;
+    background-color: var(--g2);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.356) ;
+}
+.emoji_list_wrapper::before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 15px 15px 15px 0;
+    border-color: transparent var(--g2) transparent transparent;
+}
+
+.emoji_list{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: var(--g2);
+}
+.emoji_list li{
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 2rem;
+}
+.emoji_list li:hover{
+    background: var(--g3);
+    border-radius: 3px;
+}
+
+
+.submit_btn {
+    font-family: inherit;
+    background-color: var(--g2);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    width: 90%;
+    margin: 15px auto;
+    display: block;
+    font-size: 1.7rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.sync_btn {
+    font-family: inherit;
+    background-color: var(--g2);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 30px;
+    width: 60%;
+    margin: 15px auto;
+    display: block;
+    font-size: 1.7rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.submit_btn:hover {
+    background-color: var(--g3);
+}
+.sync_btn:hover {
+    background-color: var(--g3);
+}
+
+.to_do_list {
+    background-color: var(--g2);
+    border-radius: 15px;
+    margin-top: 30px;
+    padding: 10px;
+    font-size: 1.6rem;
+}
+.to_do_list h3{
+    margin: 0;
+    padding: 8px;
+    font-size: 1.5rem;
+}
+.to_do_list label{
+    display: block;
+    margin-bottom: 10px;
+    cursor: text;
+}
+.to_do_list input[type="text"] {
+    transform: translateY(4px);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--g3);
+    color: white;
+    font-family: inherit;
+    font-size: 1.3rem;
+    outline: none;
+    width: 80%;
+}
+.to_do_list input[type="text"]::placeholder {
+    color: var(--g3);
+    font-size: 1.2rem;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 35px;
+    height: 35px;
+    border: 5px solid var(--g3);
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+input[type="checkbox"]:checked {
+    background-color: var(--g3);
+}
+input[type="checkbox"]:checked::after {
+    content: "";
+}
