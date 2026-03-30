@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="columns">
+        <div class="column_one">
+            <div class="title_section">
+            <h1>Productivity Tracker</h1>
+            </div>
+            <div class="input_section">
+                <div class="study_time_section">
+                    <p>Study Time: </p>
+                    <select>
+                        <option>5 mins</option>
+                        <option>10 mins</option>
+                        <option>15 mins</option>
+                        <option>20 mins</option>
+                        <option>30 mins</option>
+                        <option>45 mins</option>
+                        <option>1 hr</option>
+                        <option>1.5 hrs</option>
+                        <option>2 hrs</option>
+                        <option>2.5 hrs</option>
+                        <option>3 hrs</option>
+                        <option>3.5 hrs</option>
+                        <option>4 hrs</option>
+                        <option>4.5 hrs</option>
+                        <option>5 hrs</option>
+                        <option>6 hrs</option>
+                        <option>7 hrs</option>
+                        <option>8 hrs</option>
+                        <option>9 hrs</option>
+                        <option>10 hrs</option>
+                        <option>11 hrs</option>
+                        <option>12 hrs</option>
+                    </select>
+                    <!-- Select How long you have studied -->
+                </div>
+                <div class="mood_section">
+                    <p>Mood:</p>
+                    <input id = "mood_input" placeholder="?" readonly>
+
+                    <div id="emojis">
+                        <span>😁</span><span>🤩</span><span>☹️</span><span>😭</span>
+                        <span>🙄</span><span>🤬</span><span>😰</span><span>😴</span>
+                    </div>
+                </div>
+                <button class = "submit_btn">SUBMIT DATA</button>
+                <button class = "sync_btn">SYNC DATA</button>
+                <div class="to_do_list">
+                    <h3>To-Do List:</h3><br>
+                    <label><input type="checkbox">...</label><br>
+                    <label><input type="checkbox">...</label><br>
+                    <label><input type="checkbox">...</label><br>
+                    <label><input type="checkbox">...</label><br>
+                    <label><input type="checkbox">...</label>
+                </div>
+            </div>
+        </div>
+        <div class="column_two">
+            <div class="goal_section">
+                <div class="heading">
+                    <h3>Daily Goals: </h3>
+                    <span></span>
+                    <button>EDIT</button>
+                </div>
+                <div class="goals">
+                    <div class="sleep_goal">
+                        <!-- Sleep Graph (not yet implemented) -->
+                        <p>Sleep</p>
+                    </div>
+                    <div class="steps_goal">
+                        <!-- Stephs Graph (not yet implemented) -->
+                        <p>Steps</p>
+                    </div>
+                    <div class="study_time_goal">
+                        <!-- Study Time Graph (not yet implemented) -->
+                        <p>Study Time</p>
+                    </div>
+                    <div class="screen_time_goal">
+                        <!-- Screen Time Graph (not yet implemented) -->
+                        <p>Screen Time</p>
+                    </div>
+                </div>
+            </div>
+            <div class="graph_section">
+                <h3>Graphs: </h3>
+                <div class="graph">
+                    <div class="trend_graph">
+                        <!-- Trend Graphs (not yet implemented) -->
+                    </div>
+                    <div class="checklist">
+                        <label><input type="checkbox">Sleep</label><br>
+                        <label><input type="checkbox">Steps</label><br>
+                        <label><input type="checkbox">Study Time</label><br>
+                        <label><input type="checkbox">Screen Time</label><br>
+                        <label><input type="checkbox">Mood</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../utils/home.js"></script>
+</html>
