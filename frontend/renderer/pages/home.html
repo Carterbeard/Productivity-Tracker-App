@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="columns">
         <div class="column_one">
+            <div class="title_section">
             <h1>Productivity Tracker</h1>
+            </div>
             <div class="input_section">
                 <div class="study_time_section">
                     <p>Study Time: </p>
@@ -40,7 +44,12 @@
                 </div>
                 <div class="mood_section">
                     <p>Mood:</p>
-                    <input id = "box" placeholder="?" readonly>
+                    <input id = "mood_input" placeholder="?" readonly>
+
+                    <div id="emojis">
+                        <span>😁</span><span>🤩</span><span>☹️</span><span>😭</span>
+                        <span>🙄</span><span>🤬</span><span>😰</span><span>😴</span>
+                    </div>
                 </div>
                 <button class = "submit_btn">SUBMIT DATA</button>
                 <button class = "sync_btn">SYNC DATA</button>
