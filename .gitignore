@@ -1,0 +1,22 @@
+# Compiled Java Classes
+*.class
+**/target/
+**/build/
+
+# IDE Settings
+.idea/
+.vscode/
+*.iml
+
+# Database & Environment Config
+application.properties
+*.log
+.env
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+
+# Frontend Dependencies
+node_modules/
+dist/
