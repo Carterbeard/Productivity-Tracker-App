@@ -44,10 +44,10 @@
                         <!-- Select How long you have studied -->
                     </div>
                 </div>
-                <div class="mood_section">
+                <div class="emoji_section">
                     <span></span>
                     <p>Mood:</p>
-                    <input id = "mood_input" placeholder="❓" readonly>
+                    <input id = "emoji_input" placeholder="❓" readonly>
                     <span></span>
                     <div class="emoji_list_wrapper">
                         <ul class ="emoji_list">
@@ -82,34 +82,86 @@
                     <button class="edit_btn">EDIT</button>
                 </div>
                 <div class="goals">
-                    <div class="goal_item">
+                    <div class="goal_item" id="sleep">
                         <div class="circle sleep_goal">
-                            <div class="inner_circle">7.5hrs</div> <!--change to variable -->
-                        </div>    
-                        <p>Sleep</p>
-                    </div>
-                    <div class="goal_item">
-                        <div class="circle steps_goal">
-                            <div class="inner_circle">10,000</div> <!--change to variable -->
+                            <div class="inner_circle">7.5hrs</div> <!--change to function -> get(sleep) -->
                         </div>   
-                        <p>Steps</p>
+                        <div class = "goal_popup">
+                            <p>7.5/10 hours completed</p><br>
+                            <p>Remaining: 2.5 hours</p>
+                            <!--change to function -> get(sleep) / getGoal(sleep)-->
+                        </div>
+                        <div class="edit_popup">
+                            <p>Current goal: 10 hours</p>
+                            <input type="number" step = "0.5" placeholder="10 hours"><br>
+                            <button class="submit_edit">Submit</button>
+                            <!--change to function -> 
+                            getGoal(sleep)
+                            on click setGoal(sleep)-->
+                        </div>
+                        <p class="goal_heading">Sleep</p>
                     </div>
-                    <div class="goal_item">
+                    <div class="goal_item" id="steps">
+                        <div class="circle steps_goal">
+                            <div class="inner_circle">10,000</div> <!--change to function -> get(steps) -->
+                        </div>  
+                        <div class = "goal_popup">
+                            <p>10,000/10,000 steps complete</p><br>
+                            <p>Remaining: 0 steps</p>
+                            <!--change to function -> get(steps) / getGoal(steps)-->
+                        </div>
+                        <div class="edit_popup">
+                            <p>Current goal: 10,000 steps</p>
+                            <input type="number" step = "100" placeholder="10000 steps"><br>
+                            <button class="submit_edit">Submit</button>
+                            <!--change to function -> 
+                            getGoal(steps)
+                            on click setGoal(steps)-->
+                        </div>
+                        <p class="goal_heading">Steps</p>
+                    </div>
+                    <div class="goal_item" id="study_time">
                         <div class="circle study_time_goal">
-                            <div class="inner_circle">1hr</div> <!--change to variable -->
-                        </div>    
-                        <p>Study Time</p>    
+                            <div class="inner_circle">1hr</div> <!--change to function -> get(study_time) -->
+                        </div>  
+                        <div class = "goal_popup">
+                            <p>1/4 hours completed</p><br>
+                            <p>Remaining: 3 hours</p>
+                            <!--change to function -> get(study_time) / getGoal(study_time)-->
+                        </div>
+                        <div class="edit_popup">
+                            <p>Current goal: 4 hours</p>
+                            <input type="number" step = "0.5" placeholder="4 hours"><br>
+                            <button class="submit_edit">Submit</button>
+                            <!--change to function -> 
+                            getGoal(study_time)
+                            on click setGoal(study_time)-->
+                        </div>
+                        <p class="goal_heading">Study Time</p>    
                     </div>
-                    <div class="goal_item">
+                    <div class="goal_item" id="screen_time">
                         <div class="circle screen_time_goal">
-                            <div class="inner_circle">3hrs</div> <!--change to variable -->
-                        </div>    
-                        <p>Screen Time</p>
+                            <div class="inner_circle">3hrs</div> <!--change to function -> get(screen_time) -->
+                        </div>
+                        <div class = "goal_popup">
+                            <p>3/4 hours completed</p><br>
+                            <p>Remaining: 1 hour</p>
+                            <!--change to function -> get(screen_time) / getGoal(screen_time)-->
+                        </div>
+                        <div class="edit_popup">
+                            <p>Current goal: 4 hours</p>
+                            <input type="number" step = "0.5" placeholder="4 hours"><br>
+                            <button class="submit_edit">Submit</button>
+                            <!--change to function -> 
+                            getGoal(screen_time)
+                            on click setGoal(screen_time)-->
+                        </div>
+                        <p class="goal_heading">Screen Time</p>
                     </div>
                 </div>
             </div>
             <div class="graph_section">
-                <h3 class="graphs_heading">Graphs: </h3>
+                <h3 class="graph_heading">Graphs: </h3>
                 <div class="graph">
                     <div class="trend_graph">
                         <!-- Trend Graphs (not yet implemented) -->

@@ -4,6 +4,7 @@
     --g2: #408A71;
     --g3: #B0E4CC;
     --g4: #50776a;
+    --g5: #b0e4cc93;
 }
 /* colour variables */
 
@@ -151,7 +152,7 @@ body {
 -------------------------
 */
 
-.mood_section {
+.emoji_section {
     position: relative;
     display: flex;
     justify-content: center;
@@ -161,7 +162,7 @@ body {
     font-size: 1.6rem;
     padding-right: 5px;
 }
-.mood_section input {
+.emoji_section input {
     field-sizing: content;
     background-color: var(--g2);
     color: white;
@@ -347,6 +348,9 @@ input[type="checkbox"]:checked::after {
     border-radius: 15px;
     padding: 25px;
 }
+.goal_section.edit_mode{
+    background-color: var(--g5);
+}
 
 .heading {
     display: flex;
@@ -372,13 +376,14 @@ input[type="checkbox"]:checked::after {
     cursor: pointer;
     transition: transform 0.1s;
 }
-
 .edit_btn:hover {
     background-color: var(--g4);
 }
-
 .edit_btn:active {
     transform: scale(0.95)
+}
+.goal_section.edit_mode .edit_btn{
+    background-color: var(--g4);
 }
 
 .goals {
@@ -389,6 +394,7 @@ input[type="checkbox"]:checked::after {
 }
 
 .goal_item {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -396,18 +402,124 @@ input[type="checkbox"]:checked::after {
     font-size: 1.3rem;
 }
 
+.goal_popup{
+    position: absolute;
+    bottom: 100%;
+    background: var(--g3);
+    padding: 12px;
+    border-radius: 12px;
+    width: 140px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); 
+    transition: all 0.3s ease-out;
+    z-index: 100;
+}
+.goal_popup p {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.edit_popup{
+    position: absolute;
+    bottom: 100%;
+    background: var(--g3);
+    padding: 12px;
+    border-radius: 12px;
+    width: 140px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); 
+    transition: all 0.3s ease-out;
+    z-index: 100;
+}
+.edit_popup p {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+.edit_popup input{
+    margin: 5px 0px;
+    transform: translateY(4px);
+    background: transparent;
+    border: 2px dotted white;
+    border-radius: 5px;
+    color: white;
+    font-family: inherit;
+    font-size: 1.3rem;
+    outline: none;
+    width: 80%;
+}
+.edit_popup input::placeholder {
+    color: white;
+    font-size: 1rem;
+    opacity: 50%;
+}
+/* gets rid of up and down arrows with number input */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.submit_edit{
+    font-family: inherit;
+    background-color: var(--g4);
+    color: white;
+    border: none;
+    padding: 3px;
+    border-radius: 10px;
+    width: 80%;
+    margin: auto;
+    margin-top: 10px;
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.submit_edit:hover {
+    background-color: var(--g2);
+}
+.submit_edit:active {
+    transform: scale(0.95)
+}
+
+.goal_heading{
+    margin-top: 0px;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
 .circle {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.goal_section:not(.edit_mode) .circle:hover{
+    outline: 1.5px solid var(--g3);
+}
+.circle:hover .inner_circle{
+    outline: 1.5px solid var(--g3);
+}
+.goal_section:not(.edit_mode) .circle:hover + .goal_popup {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-10px);
+}
 
 .inner_circle {
-    width: 75px;
-    height: 75px;
+    width: 90px;
+    height: 90px;
     background-color: var(--g2);
     border-radius: 50%;
     display: flex;
@@ -416,21 +528,45 @@ input[type="checkbox"]:checked::after {
     font-size: 1.2rem;
     font-weight: 700;
 }
+.goal_section.edit_mode .inner_circle{
+    background-color: var(--g5);
+    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.256) ;
+}
+.goal_section.edit_mode .inner_circle:active{
+    transform: scale(0.96);
+}
 
 .sleep_goal {
     background: conic-gradient(#5a4ed1 75%, rgba(255,255,255,0.15) 0);
+    /* will have a function to change the % when "sync data" button is clicked based on goal*/
+}
+.goal_section.edit_mode .sleep_goal{
+    background: conic-gradient(#646464bc 100%, rgba(255,255,255,0.15) 0);
 }
 
 .steps_goal {
     background: conic-gradient(#00bbf0 100%, rgba(255,255,255,0.15) 0);
+    /* will have a function to change the % when "sync data" button is clicked based on goal*/
+}
+.goal_section.edit_mode .steps_goal{
+    background: conic-gradient(#646464bc 100%, rgba(255,255,255,0.15) 0);
 }
 
 .study_time_goal {
     background: conic-gradient(#f4d03f 25%, rgba(255,255,255,0.15) 0);
+    /* will have a function to change the % when "sync data" button is clicked based on goal*/
+}
+.goal_section.edit_mode .study_time_goal{
+    background: conic-gradient(#646464bc 100%, rgba(255,255,255,0.15) 0);
 }
 
+
 .screen_time_goal {
-    background: conic-gradient(#f64747 80%, rgba(255,255,255,0.15) 0);
+    background: conic-gradient(#f64747 75%, rgba(255,255,255,0.15) 0);
+    /* will have a function to change the % when "sync data" button is clicked based on goal*/
+}
+.goal_section.edit_mode .screen_time_goal{
+    background: conic-gradient(#646464bc 100%, rgba(255,255,255,0.15) 0);
 }
 
 /*
@@ -449,7 +585,8 @@ input[type="checkbox"]:checked::after {
 }
 
 .graph_heading {
-    margin: 0;
+    margin-bottom: 20px;
+    margin-top: 0;
     font-size: 1.6rem;
 }
 
