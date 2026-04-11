@@ -615,3 +615,46 @@ input[type=number]::-webkit-inner-spin-button {
     align-items: center;
     cursor: pointer;
 }
+
+/* 
+--------------------------------
+    NOTIFICATIONS AND TOASTS
+--------------------------------
+*/
+
+/* --------------------------------
+    NOTIFICATIONS & TOASTS
+--------------------------------
+*/
+#notification_container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.notification {
+    background-color: #262626;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    font-size: 1.2rem;
+    font-weight: 700;
+    opacity: 0;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+.notification.error {
+    background-color: #ff6b6b;
+}
+
+.notification.success {
+    background-color: #50FA7B;
+}

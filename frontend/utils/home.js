@@ -8,7 +8,8 @@ const edit_btn = document.querySelector('.edit_btn');
 const goal_section = document.querySelector('.goal_section');
 const inner_circles = document.querySelectorAll('.inner_circle')
 const edit_popups = document.querySelectorAll('.edit_popup');
-
+const submit_btn = document.querySelector('.submit_btn');
+const sync_btn = document.querySelector('.sync_btn');
 
 study_select.addEventListener('click',() => {
     study_options_wrapper.style.display = 'block';
@@ -145,3 +146,85 @@ function set_new_goal(goal, input, circle, popup){
         //reset input
     }
 }
+
+// notification
+
+function showNotification(message, type='error') {
+    const container = document.getElementById('notification_container');
+    // create the notification
+
+    const notification = document.createElement('div');
+    notification.classList.add('notification', type);
+    notification.textContent = message;
+
+    // add notification to the container
+    container.appendChild(notification);
+
+    // show the notification
+    notification.classList.add('show');
+
+    // remove the notification after 3.5 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 3500);
+}
+
+// get and clean to do list
+
+function getToDoData() {
+    const toDoRows = document.querySelectorAll('.to_do_list label');
+    let isValid = true;
+    let cleanData = [];
+
+    // loop through each label
+    toDoRows.forEach(row => {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        const textInput = row.querySelector('input[type="text"]').value.trim();
+
+        if (textInput === "") return;
+
+        // check for < > to stop html injection
+        if (textInput.includes("<") || textInput.includes(">")) {
+            showNotification("Invalid input: Please do not use < or >");
+            isValid = false;
+            return;
+        }
+
+        // add clean labels to array with checkbox value
+        cleanData.push({
+            task: textInput,
+            isComplete: checkbox.checked
+        });
+    });
+
+    // only return data if valid
+    if (isValid) {
+        return cleanData;
+    } else {
+        return null;
+    }
+}
+
+// submit button
+
+submit_btn.addEventListener('click', () => {
+    // get all data
+    const currentStudyTime = study_select.textContent;
+    const currentMood = emoji_select.value;
+    const currentToDoList = getToDoData();
+    // need to get daily goals
+
+    // check for valid to do list
+    if (currentToDoList === null) return;
+
+    // check if mood has been selected
+    if (currentMood === "") {
+        showNotification("Please select a mood");
+        return;
+    }
+
+    // send data to db
+
+    showNotification("Submitted successfully :)", "success");
+});
