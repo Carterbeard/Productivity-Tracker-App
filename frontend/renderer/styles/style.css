@@ -645,10 +645,13 @@ input[type=number]::-webkit-inner-spin-button {
     font-size: 1.2rem;
     font-weight: 700;
     opacity: 0;
+    transform: translateX(120%);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .notification.show {
     opacity: 1;
+    transform: translateX(0);
 }
 
 .notification.error {
