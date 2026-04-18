@@ -58,9 +58,9 @@ public class api_controller {
         goalRepository.save(goal);
     }
 
-    @GetMapping("/retrieve/goals")
-    public List<Goal> get_goals() {
-        return goalRepository.findAll();
+    @GetMapping("/retrieve/goals/{dateSet}/{goalType}")
+    public List<Goal> get_goals(@PathVariable String dateSet, @PathVariable String goalType) {
+        return goalRepository.findByDateSetAndGoalType(dateSet,goalType);
     }
 
     @PostMapping("/set/todo")
@@ -68,7 +68,7 @@ public class api_controller {
         todoRepository.save(todo);
     }
 
-    @GetMapping("/retrieve/todos")
+    @GetMapping("/retrieve/todo")
     public List<ToDo> get_todos() {
         return todoRepository.findAll();
     }

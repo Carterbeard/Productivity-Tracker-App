@@ -10,23 +10,23 @@ public class Days {
     private int steps;
     private double sleep;
     private double hoursStudied;
-    private double avgMood;
+    private double screenTime;
 
     public Days() {}
-//SCreen time is different
-    public Days(String date, int steps, double sleep, double hoursStudied) {
+    //Screen time is different
+    public Days(String date, int steps, double sleep, double hoursStudied, double screenTime) {
         this.date = date;
         this.steps = steps;
         this.sleep = sleep;
         this.hoursStudied = hoursStudied;
-        this.avgMood = 0.0;
+        this.screenTime= screenTime;
     }
 
     public String getDate() { return date; }
     public int getSteps() { return steps; }
     public double getSleep() { return sleep; }
     public double getHoursStudied() { return hoursStudied; }
-    public double getAvgMood() { return avgMood; }
+    public double getScreenTime() { return screenTime; }
 
     public void setDate(String date) { this.date = date; }
     public void setSteps(int steps) {
@@ -41,5 +41,8 @@ public class Days {
         if(hoursStudied < 0) throw new IllegalArgumentException("Hours studied can't be negative");
         this.hoursStudied = hoursStudied;
     }
-    public void setAvgMood(double avgMood) { this.avgMood = avgMood; }
+    public void setScreenTime(double screenTime) {
+        if (screenTime < 0 ) throw new IllegalArgumentException("Screen time cannot be negative");
+        this.screenTime = screenTime;
+    }
 }

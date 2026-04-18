@@ -1,8 +1,8 @@
 const API_URL = 'http://localhost:8080'
 
-async function getGoal(date,goal_type){
+async function getGoal(dateSet,goalType){
     //need to filter through date and goal
-    let response = await fetch(`${API_URL}/retrieve/goals/${date}/${goal_type}`);
+    let response = await fetch(`${API_URL}/retrieve/goals/${dateSet}/${goalType}`);
     if(!response.ok){
         throw new Error("Unable to fetch goal");
     }
@@ -15,9 +15,9 @@ async function getGoal(date,goal_type){
 
 async function setGoal(goal_type, target) {
     const goal_data = {
-        goal_type: goal_type,
+        goalType: goal_type,
         target: target,
-        date: getDate()
+        dateSet: getDate()
     };
 
     try{
@@ -39,12 +39,88 @@ async function getCurrentData(date) {
     if(!response.ok){
         throw new Error("Unable to fetch today's data");
     }
-    const data_array = await response.json()
-    if(data_array.length === 0) throw new Error("No data found");
+    const data = await response.json()
+    if(data.length === 0) throw new Error("No data found");
     return{
-        screen_time: data_array[0].screen_time,
-        study_time: data_array[0].hours_studied,
-        sleep: data_array[0].sleep,
-        steps: data_array[0].steps
+        screen_time: data.screenTime,
+        study_time: data.hoursStudied,
+        sleep: data.sleep,
+        steps: data.steps
+    }
+}
+
+async function setCurrentData(steps,sleep,hours_studied,screen_time){
+    const current_data = {
+        date: getDate(),
+        steps: parseInt(steps),
+        sleep: parseFloat(sleep),
+        hoursStudied: parseFloat(hours_studied),
+        screenTime: parseFloat(screen_time)
+    }
+
+    try{
+        const response = await fetch(`${API_URL}/set/day`,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(current_data)
+        });
+        if(response.ok){
+            console.log("current data saved");
+        }
+    } catch(error){
+        console.error("error saving current data", error)
+    }
+}
+
+async function getToDo(){
+    let response = await fetch(`${API_URL}/retrieve/todo`)
+    if(!response.ok){
+        throw new Error("Unable to fetch the to-do list")
+    }
+    const todos_array = await response.json();
+    if(todos_array.length === 0) throw new Error("No data found");
+    return todos_array
+}
+
+async function setToDo(id,task,isComplete){
+    const to_do_data = {
+        todoId: id,
+        task: task,
+        dateSet: getDate(),
+        completed: isComplete
+    }
+
+    try{
+        const response = await fetch(`${API_URL}/set/todo`,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(to_do_data)
+        });
+        if(response.ok){
+            console.log("to-do list saved");
+        }
+    } catch(error){
+        console.error("error saving to-do list", error)
+    }
+}
+
+async function setMood(emoji){
+    const mood_data = {
+        date: getDate(),
+        time: getTime(),
+        emoji: emoji
+    }
+
+    try{
+        const response = await fetch(`${API_URL}/set/mood`,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(mood_data)
+        });
+        if(response.ok){
+            console.log("mood saved");
+        }
+    } catch(error){
+        console.error("error saving mood", error)
     }
 }

@@ -174,7 +174,7 @@ function showNotification(message, type='error') {
 
 // get and clean to do list
 
-function getToDoData() {
+function setToDoData() {
     const toDoRows = document.querySelectorAll('.to_do_list label');
     let isValid = true;
     let cleanData = [];
@@ -184,7 +184,6 @@ function getToDoData() {
         const checkbox = row.querySelector('input[type="checkbox"]');
         const textInput = row.querySelector('input[type="text"]').value.trim();
 
-        if (textInput === "") return;
 
         // check for < > to stop html injection
         if (textInput.includes("<") || textInput.includes(">")) {
@@ -210,11 +209,16 @@ function getToDoData() {
 
 // submit button
 
-submit_btn.addEventListener('click', () => {
+submit_btn.addEventListener('click', async () => {
     // get all data
-    const currentStudyTime = study_select.textContent;
+    let currentStudyTime = 0;
+    if(study_select.textContent.includes("mins")){
+        currentStudyTime = parseFloat(study_select.textContent)/60;
+    } else {
+        currentStudyTime = parseFloat(study_select.textContent);
+    }
     const currentMood = emoji_select.value;
-    const currentToDoList = getToDoData();
+    const currentToDoList = setToDoData();
     // need to get daily goals
 
     // check for valid to do list
@@ -227,8 +231,20 @@ submit_btn.addEventListener('click', () => {
     }
 
     // send data to db
-
-    showNotification("Submitted successfully :)", "success");
+    try{
+        for(const [i,to_do] of currentToDoList.entries()){
+            await setToDo(i+1,to_do.task,to_do.isComplete);
+        }
+        await setCurrentData(5678,6,currentStudyTime,9);
+        //!!!! these need to be change just placeholder numbers for now but these should be values got from the device api
+        await setMood(currentMood);
+        showNotification("Submitted successfully :)", "success");
+        study_select.textContent = "0 mins";
+        emoji_select.value = "";
+    }catch(error){
+        showNotification("Failed to save data");
+        console.error(error);
+    }
 });
 
 //creates formatted version of today's date
@@ -240,12 +256,20 @@ function getDate(){
     const date = `${day}-${month}-${year}`;
     return date;
 }
+function getTime(){
+    const today = new Date();
+    const hours = today.getHours();
+    const minutes = today.getMinutes();
+    const seconds = today.getSeconds();
+    const time = `${hours}:${minutes}:${seconds}`;
+    return time;
+}
 
 
 //SYNC BUTTON:
 sync_btn.addEventListener('click', ()=>{
-    const date = getDate();
     updateGoals();
+    updateToDo();
 })
 
 submit_edit_btns.forEach(submit_edit_btn =>{
@@ -265,6 +289,7 @@ submit_edit_btns.forEach(submit_edit_btn =>{
 
 async function updateGoals(){
     goal_ids = ['sleep','steps','study_time','screen_time'];
+    const current_data = await getCurrentData(getDate());
     for (const goal_id of goal_ids) {
         const goal_container = document.getElementById(goal_id);
         const inside_circle = goal_container.querySelector('.inner_circle');
@@ -274,35 +299,35 @@ async function updateGoals(){
         const circle = goal_container.querySelector('.circle')
         try {
             const target = await getGoal(getDate(), goal_id);
-            const current_data = await getCurrentData(getDate());
-            const difference = target - current_data;
-            const percentage = Math.round((current_data/target)*100)
+            const actual_value = current_data[goal_id]
+            const difference = target - actual_value;
+            const percentage = Math.min(Math.round((actual_value/target)*100),100);
             if (goal_id !== 'steps') {
                 if(target !== 1){
-                    inside_circle.innerHTML = `${target}hrs`;
+                    inside_circle.innerHTML = `${actual_value}hrs`;
                     edit_popup_p.innerHTML = `Current goal: ${target} hours`;
                 } else {
-                    inside_circle.innerHTML = `${target}hr`;
+                    inside_circle.innerHTML = `${actual_value}hr`;
                     edit_popup_p.innerHTML = `Current goal: ${target} hour`;
                 }
-                completion.innerHTML = `${current_data.goal_id}/${target} hours completed`;
+                completion.innerHTML = `${current_data[goal_id]}/${target} hours completed`;
                 if(difference>0){
                     remaining.innerHTML = `Remaining: ${difference} hours`
                 } else {
                     remaining.innerHTML = `Remaining: 0 hours`
                 }
                 if(goal_id === 'sleep'){
-                    circle.style.background = `conic-gradient(#5a4ed1 ${percentage}, rgba(255,255,255,0.15) 0)`;
+                    circle.style.background = `conic-gradient(#5a4ed1 ${percentage}%, rgba(255,255,255,0.15) 0)`;
                 } else if (goal_id === 'study_time'){
-                    circle.style.background = `conic-gradient(#f4d03f ${percentage}, rgba(255,255,255,0.15) 0)`;
+                    circle.style.background = `conic-gradient(#f4d03f ${percentage}%, rgba(255,255,255,0.15) 0)`;
                 } else if (goal_id === 'screen_time'){
-                    circle.style.background = `conic-gradient(#f64747 ${percentage}, rgba(255,255,255,0.15) 0)`;
+                    circle.style.background = `conic-gradient(#f64747 ${percentage}%, rgba(255,255,255,0.15) 0)`;
                 }
             } else {
-                inside_circle.innerHTML = target;
+                inside_circle.innerHTML = actual_value;
                 edit_popup_p.innerHTML = `Current goal: ${target} steps`
-                completion.innerHTML = `${current_data.goal_id}/${target} steps complete`;
-                circle.style.background = `conic-gradient(#00bbf0 ${percentage}, rgba(255,255,255,0.15) 0)`;
+                completion.innerHTML = `${current_data[goal_id]}/${target} steps complete`;
+                circle.style.background = `conic-gradient(#00bbf0 ${percentage}%, rgba(255,255,255,0.15) 0)`;
                 if(difference>0){
                     remaining.innerHTML = `Remaining: ${difference} steps`
                 } else {
@@ -311,11 +336,30 @@ async function updateGoals(){
             }
         } catch (error) {
             console.error(`Error loading ${goal_id}:`, error);
-            inside_circle.innerHTML = "0";
+            if (goal_id !== 'steps') {            
+                inside_circle.innerHTML = "0hrs";
+            } else {
+                inside_circle.innerHTML = "0";
+            }
         }
     }
 }
 
 async function updateToDo(){
+    const toDoRows = document.querySelectorAll('.to_do_list label');
+    const to_do_data = await getToDo();
+
+    toDoRows.forEach(row => {
+        row.querySelector('input[type="text"]').value = "";
+        row.querySelector('input[type="checkbox"]').checked = false;
+    });
     
+    to_do_data.forEach((to_do,i) => {
+        if(toDoRows[i]){
+            const task = to_do.task;
+            const isComplete = to_do.completed;
+            toDoRows[i].querySelector('input[type="checkbox"]').checked = isComplete;
+            toDoRows[i].querySelector('input[type="text"]').value = task;
+        }
+    })
 }
