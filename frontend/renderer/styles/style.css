@@ -55,11 +55,45 @@ body {
 --------------------------
 */
 
-.title_section {
+.column_one_heading{
+    display: flex;
+    gap: 15px;
+    height: 80px;
+}
+
+.profile_icon_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    height: 100%;
     background-color: var(--g1);
-    font-size: 1rem;
+    border-radius: 15px;
+}
+.profile_icon_container:hover{
+    background-color: var(--g2);
+}
+.profile_icon_container:hover .profile_icon{
+    filter:invert(100%) brightness(200%);
+}
+.profile_icon_container:active{
+    transform: scale(95%);
+}
+.profile_icon{
+    max-width: 75%;
+    filter: invert(70%) brightness(135%);
+}
+
+
+.title_section {
+    display: flex;
+    width: 80%;
+    background-color: var(--g1);
+    font-size: 0.85rem;
     text-align: center;
     border-radius: 15px;
+    align-items: center;
+    justify-content: center;
 }
 
 /*

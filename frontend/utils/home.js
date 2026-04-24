@@ -11,6 +11,11 @@ const edit_popups = document.querySelectorAll('.edit_popup');
 const submit_btn = document.querySelector('.submit_btn');
 const sync_btn = document.querySelector('.sync_btn');
 const submit_edit_btns = document.querySelectorAll('.submit_edit')
+const profile_icon = document.querySelector('.profile_icon_container')
+
+profile_icon.addEventListener('click',()=>{
+    window.location.href = 'profile.html'
+})
 
 study_select.addEventListener('click',() => {
     study_options_wrapper.style.display = 'block';
