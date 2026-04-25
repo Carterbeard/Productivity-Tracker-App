@@ -54,17 +54,27 @@
                     <p>Mood:</p>
                     <input id = "emoji_input" placeholder="❓" readonly>
                     <span></span>
-                    <div class="emoji_list_wrapper">
-                        <ul class ="emoji_list">
-                            <li>😁</li>
-                            <li>🤩</li>
-                            <li>☹️</li>
-                            <li>😭</li>
-                            <li>🙄</li>
-                            <li>🤬</li>
-                            <li>😰</li>
-                            <li>😴</li>
-                        </ul>
+                    <div class="emoji_wrapper">
+                        <div class="submit_or_cancel">
+                            <div class="cancel">
+                                ✗
+                            </div>
+                            <div class="submit">
+                                ✓
+                            </div>
+                        </div>
+                        <div class="emoji_display">😐</div>
+                        <div class="emoji_label">Neutral</div>
+                        <div class="slider_wrap">
+                            <input type="range" id="emoji_slider" min="1" max="5" step="1" value="3">
+                        </div>
+                        <div class="emoji_nums">
+                            <div>1</div>
+                            <div>2</div>
+                            <div>3</div>
+                            <div>4</div>
+                            <div>5</div>
+                        </div>
                     </div>
                 </div>
                 <button class = "submit_btn">SUBMIT DATA</button>

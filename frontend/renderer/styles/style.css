@@ -5,6 +5,7 @@
     --g3: #B0E4CC;
     --g4: #50776a;
     --g5: #b0e4cc93;
+    --g6: #92bda9;
 }
 /* colour variables */
 
@@ -210,7 +211,7 @@ body {
     cursor: pointer;
 }
 
-.emoji_list_wrapper{
+.emoji_wrapper{
     display:none;
     position: absolute;
     left: 71%;
@@ -221,9 +222,9 @@ body {
     background-color: var(--g2);
     border-radius: 8px;
     padding: 12px;
-    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.356) ;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.356);
 }
-.emoji_list_wrapper::before {
+.emoji_wrapper::before {
     content: "";
     position: absolute;
     right: 100%;
@@ -235,24 +236,95 @@ body {
     border-width: 15px 15px 15px 0;
     border-color: transparent var(--g2) transparent transparent;
 }
-
-.emoji_list{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 20px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background: var(--g2);
+.submit_or_cancel{
+    display: flex;
+    justify-content: space-between;
 }
-.emoji_list li{
-    padding: 10px 15px;
-    text-align: center;
-    font-size: 2rem;
+.submit{
+    display: flex;
+    width: 25px;
+    height: 25px;
+    padding: 2px 5px 5px 5px;
+    font-size: 2.9cqw;
+    background: #50fa7aa2;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
 }
-.emoji_list li:hover{
+.submit:hover{
+    background: #50fa7a6e;
+}
+.submit:active{
+    transform: scale(0.9);
+}
+.cancel{
+    display: flex;
+    width: 25px;
+    height: 25px;
+    padding: 2px 5px 5px 5px;
+    font-size: 2.5cqw;
+    background: #ff2929a2;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.cancel:hover{
+    background:#ff29298e;;
+}
+.cancel:active{
+    transform: scale(0.9);
+}
+input[type=range] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: transparent;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 40px; /* Taller than the track */
+    width: 12px;  /* Width of the rectangle */
     background: var(--g3);
-    border-radius: 3px;
+    cursor: pointer;
+    margin-top: -5px; /* Center the thumb vertically */
+    border-radius: 0; /* Ensures flat edges */
+}
+input[type=range]::-webkit-slider-thumb:hover {
+    background: var(--g6);
+}
+input[type=range]::-webkit-slider-runnable-track {
+    overflow: hidden;
+    border-radius: 2px;
+    height: 25px;
+    background: 
+    /* vertical traintracks */
+    linear-gradient(#00000050, #00000050) 6% center / 3px 20px no-repeat,
+    linear-gradient(#00000050, #00000050) 27.5% center / 3px 20px no-repeat,
+    linear-gradient(#00000050, #00000050) 50% center / 3px 20px no-repeat,
+    linear-gradient(#00000050, #00000050) 72.5% center / 3px 20px no-repeat,
+    linear-gradient(#00000050, #00000050) 94% center / 3px 20px no-repeat,
+    linear-gradient(#00000050, #00000050) center / 88% 3px no-repeat;
+}
+.emoji_nums{
+    display:flex;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+.emoji_display{
+    font-size: 7cqw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.emoji_label{
+    font-size: 1.8vw;
+    word-spacing: -7px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /*
