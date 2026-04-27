@@ -16,12 +16,36 @@ const inner_circles = document.querySelectorAll('.inner_circle')
 const edit_popups = document.querySelectorAll('.edit_popup');
 const submit_btn = document.getElementById('submit_btn');
 const sync_btn = document.getElementById('sync_btn');
-const submit_edit_btns = document.querySelectorAll('.submit_edit')
-const profile_icon = document.querySelector('.profile_icon_container')
+const submit_edit_btns = document.querySelectorAll('.submit_edit');
+const profile_icon = document.querySelector('.profile_icon_container');
+const checkLoadingScreen = false;
 
 document.addEventListener('DOMContentLoaded', () => {
     updateGoals();
     updateToDo();
+    if (!checkLoadingScreen) {
+        const welcomeScreen = document.getElementById("welcome_screen");
+        const quotesDiv = document.querySelector(".quotes");
+
+        const quotes = [
+            '“Small steps today build unstoppable momentum tomorrow.”',
+            '“Progress beats perfection—every single time.”',
+            '“Focus on what matters, and the rest will follow.”',
+            '“You don’t need more time—just more intention.”',
+            'Show up, start small, and keep going.”'
+        ];
+        quotesDiv.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+        setTimeout(() => {
+            welcomeScreen.style.opacity = "0";
+            welcomeScreen.style.visibility = "hidden";
+
+            setTimeout(() => {
+                welcomeScreen.remove();
+            }, 800);
+        }, 1300);
+        checkLoadingScreen = true;
+    }
 });
 
 profile_icon.addEventListener('click',()=>{
