@@ -14,10 +14,15 @@ const edit_btn = document.querySelector('.edit_btn');
 const goal_section = document.querySelector('.goal_section');
 const inner_circles = document.querySelectorAll('.inner_circle')
 const edit_popups = document.querySelectorAll('.edit_popup');
-const submit_btn = document.querySelector('.submit_btn');
-const sync_btn = document.querySelector('.sync_btn');
+const submit_btn = document.getElementById('submit_btn');
+const sync_btn = document.getElementById('sync_btn');
 const submit_edit_btns = document.querySelectorAll('.submit_edit')
 const profile_icon = document.querySelector('.profile_icon_container')
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateGoals();
+    updateToDo();
+});
 
 profile_icon.addEventListener('click',()=>{
     window.location.href = 'profile.html'
@@ -327,15 +332,15 @@ async function updateGoals(){
             const percentage = Math.min(Math.round((actual_value/target)*100),100);
             if (goal_id !== 'steps') {
                 if(target !== 1){
-                    inside_circle.innerHTML = `${actual_value}hrs`;
+                    inside_circle.innerHTML = `${Number(actual_value).toFixed(2)}hrs`;
                     edit_popup_p.innerHTML = `Current goal: ${target} hours`;
                 } else {
                     inside_circle.innerHTML = `${actual_value}hr`;
                     edit_popup_p.innerHTML = `Current goal: ${target} hour`;
                 }
-                completion.innerHTML = `${current_data[goal_id]}/${target} hours completed`;
+                completion.innerHTML = `${Number(current_data[goal_id]).toFixed(2)}/${target} hours completed`;
                 if(difference>0){
-                    remaining.innerHTML = `Remaining: ${difference} hours`
+                    remaining.innerHTML = `Remaining: ${Number(difference).toFixed(2)} hours`
                 } else {
                     remaining.innerHTML = `Remaining: 0 hours`
                 }

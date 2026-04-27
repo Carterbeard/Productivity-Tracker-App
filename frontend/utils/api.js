@@ -4,12 +4,14 @@ async function getGoal(dateSet,goalType){
     //need to filter through date and goal
     let response = await fetch(`${API_URL}/retrieve/goals/${dateSet}/${goalType}`);
     if(!response.ok){
-        throw new Error("Unable to fetch goal");
+        return 0; 
     }
-    const goal_array = await response.json();
-    //goal_array should be an array of goal_type, target, date
+    const text = await response.text();
+    if (!text) return 0;
+
+    const goal_array = JSON.parse(text);
     
-    if(goal_array.length === 0) throw new Error("No goals found");
+    if(goal_array.length === 0) return 0;
     return goal_array[0].target
 }
 
@@ -39,7 +41,11 @@ async function getCurrentData(date) {
     if(!response.ok){
         throw new Error("Unable to fetch today's data");
     }
-    const data = await response.json()
+
+    const text = await response.text();
+    if (!text) return {};
+    const data = JSON.parse(text);
+
     if(data.length === 0) throw new Error("No data found");
     return{
         screen_time: data.screenTime,
@@ -108,7 +114,7 @@ async function setMood(emoji){
     const mood_data = {
         date: getDate(),
         time: getTime(),
-        emoji: emoji
+        emoji: Number(emoji)
     }
 
     try{
