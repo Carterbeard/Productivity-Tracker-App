@@ -13,6 +13,13 @@ const streak_times = document.querySelectorAll('.streak_time')
 document.addEventListener('DOMContentLoaded', () => {
     updateActions();
     updateStreaks();
+    let f_name = localStorage.getItem('first_name');
+    let l_name = localStorage.getItem('last_name');
+    if(f_name && l_name){
+        first_name.value = f_name;
+        last_name.value = l_name;
+        updateProfile();
+    }
 });
 
 profile_icon.addEventListener('click',()=>{
@@ -82,9 +89,11 @@ function updateProfile(){
             p1_item.id = 'first_p'
             p1_item.className = 'p_name'
             first_name.replaceWith(p1_item);
+            localStorage.setItem('first_name',first_name.value)
             first_name.value = ""
         }
     } else {
+        localStorage.removeItem('first_name')
         const input1 = document.createElement('input');
         const first_p = document.getElementById('first_p');
         input1.type = 'text';
@@ -100,9 +109,11 @@ function updateProfile(){
             p_item.id = 'last_p'
             p_item.className = 'p_name'
             last_name.replaceWith(p_item);
+            localStorage.setItem('last_name',last_name.value)
             last_name.value = ""
         }
     } else {
+        localStorage.removeItem('last_name')
         const input = document.createElement('input');
         const last_p = document.getElementById('last_p');
         input.type = 'text';
