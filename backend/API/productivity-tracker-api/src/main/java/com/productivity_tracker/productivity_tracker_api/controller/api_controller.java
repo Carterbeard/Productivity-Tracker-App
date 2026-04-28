@@ -1,15 +1,14 @@
 package com.productivity_tracker.productivity_tracker_api.controller;
 
-import com.productivity_tracker.productivity_tracker_api.model.Days;
-import com.productivity_tracker.productivity_tracker_api.model.Mood;
-import com.productivity_tracker.productivity_tracker_api.model.Goal;
-import com.productivity_tracker.productivity_tracker_api.model.ToDo;
+import com.productivity_tracker.productivity_tracker_api.model.*;
 import com.productivity_tracker.productivity_tracker_api.repository.DaysRepository;
 import com.productivity_tracker.productivity_tracker_api.repository.MoodRepository;
 import com.productivity_tracker.productivity_tracker_api.repository.GoalRepository;
 import com.productivity_tracker.productivity_tracker_api.repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -71,5 +70,19 @@ public class api_controller {
     @GetMapping("/retrieve/todo")
     public List<ToDo> get_todos() {
         return todoRepository.findAll();
+    }
+
+    @PostMapping("/retrieve/graph/Data")
+    public List<GraphData> get_data(@RequestBody List<String> dates) {
+        List<GraphData> Graph_Data= new ArrayList<>();
+        List<Days> days = daysRepository.findByDateIn(dates);
+        List<Mood> moods = moodRepository.findByDateIn(dates);
+        for (int i = 0; i<7; i++) {
+            Days next_day = days.get(i);
+            Mood next_mood = moods.get(i);
+            GraphData Next_data = new GraphData(next_day.getDate(), next_day.getSteps(), next_day.getSleep(), next_day.getHoursStudied(), next_day.getScreenTime(), next_mood.getEmoji());
+            Graph_Data.add(Next_data);
+        }
+        return Graph_Data;
     }
 }
