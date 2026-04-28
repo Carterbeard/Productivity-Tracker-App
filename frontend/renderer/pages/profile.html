@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <div class="columns">
+        <div class="column_one">
+            <div class="column_one_heading">
+                <div class="profile_icon_container">
+                    <img src="../assets/user.png" class="profile_icon">
+                </div>
+                <div class="title_section">
+                    <h1 class="settings_title">Profile & Settings</h1>
+                </div>
+            </div>
+            <div class="input_section">
+                <h1 class="personal_title">Personal Info</h1>
+                <div class="mint_coach">
+                    <div class="mint_coach_heading">
+                        <img src="../assets/chat.png" class="coach_icon">
+                        <h3 class="mint_coach_title">MINT COACH</h3>
+                    </div>
+                    <div class="action">
+                        Suggested Actions:
+                        <ul class="action_list"></ul>
+                    </div>
+                </div>
+                <div class="name_entry">
+                    <h3 class="name_title">First Name:</h3>
+                    <input type="text" placeholder="..." id="first_name" class = "name_input">
+                    <h3 class="name_title">Last Name:</h3>
+                    <input type="text" placeholder="..." id="last_name" class = "name_input">
+                </div>
+                <button class = "submit_btn" id="update_profile">UPDATE PROFILE</button>
+                <button class = "sync_btn" id="sync_profile_btn">SYNC DATA</button>
+            </div>
+        </div>
+        <div class="column_two">
+            <div class="streak_container">
+                <h2 class="streak_title">Your Goals and Streaks</h2>
+                <div class="streak_grid">
+                    <div class="streak">
+                        <div class="sleep_band"></div>
+                        <h3 class="streak_heading">SLEEP</h3>
+                        <div class="streak_time" id="sleep">0</div>
+                        <div class="streak_days">
+                            <p class="days_title">DAYS</p>
+                            <img src="../assets/fire.png" class="fire_icon">
+                        </div>
+                    </div>
+                    <div class="streak">
+                        <div class="steps_band"></div>
+                        <h3 class="streak_heading">STEPS</h3>
+                        <div class="streak_time" id="steps">0</div>
+                        <div class="streak_days">
+                            <p class="days_title">DAYS</p>
+                            <img src="../assets/fire.png" class="fire_icon">
+                        </div>
+                    </div>
+                    <div class="streak">
+                        <div class="study_band"></div>
+                        <h3 class="streak_heading">STUDY TIME</h3>
+                        <div class="streak_time" id="study_time">0</div>
+                        <div class="streak_days">
+                            <p class="days_title">DAYS</p>
+                            <img src="../assets/fire.png" class="fire_icon">
+                        </div>
+                    </div>
+                    <div class="streak">
+                        <div class="screen_band"></div>
+                        <h3 class="streak_heading">SCREEN TIME</h3>
+                        <div class="streak_time" id="screen_time">0</div>
+                        <div class="streak_days">
+                            <p class="days_title">DAYS</p>
+                            <img src="../assets/fire.png" class="fire_icon">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../../utils/profile.js"></script>
+<script src="../../utils/api.js"></script>
+</html>

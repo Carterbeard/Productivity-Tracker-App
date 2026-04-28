@@ -2,15 +2,31 @@ const study_select = document.querySelector('.select_study_time');
 const study_options = document.querySelectorAll('.options_list li');
 const study_options_wrapper = document.querySelector('.options_wrapper')
 const emoji_select = document.getElementById('emoji_input')
-const emoji_options = document.querySelectorAll('.emoji_list li')
-const emoji_list_wrapper = document.querySelector('.emoji_list_wrapper')
+const emoji_wrapper = document.querySelector('.emoji_wrapper')
+const emoji_slider = document.getElementById('emoji_slider')
+const emoji_display = document.querySelector('.emoji_display')
+const emoji_label = document.querySelector('.emoji_label')
+const emojis = ['😢', '😕', '😐', '🙂', '😄'];
+const emoji_labels = ['Very sad', 'Sad', 'Neutral', 'Happy', 'Very happy'];
+const submit = document.querySelector('.submit');
+const cancel = document.querySelector('.cancel');
 const edit_btn = document.querySelector('.edit_btn');
 const goal_section = document.querySelector('.goal_section');
 const inner_circles = document.querySelectorAll('.inner_circle')
 const edit_popups = document.querySelectorAll('.edit_popup');
-const submit_btn = document.querySelector('.submit_btn');
-const sync_btn = document.querySelector('.sync_btn');
+const submit_btn = document.getElementById('submit_btn');
+const sync_btn = document.getElementById('sync_btn');
 const submit_edit_btns = document.querySelectorAll('.submit_edit')
+const profile_icon = document.querySelector('.profile_icon_container')
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateGoals();
+    updateToDo();
+});
+
+profile_icon.addEventListener('click',()=>{
+    window.location.href = 'profile.html'
+})
 
 study_select.addEventListener('click',() => {
     study_options_wrapper.style.display = 'block';
@@ -30,8 +46,8 @@ window.addEventListener('click', (e) => {
     if (!study_select.contains(e.target)){
         study_options_wrapper.style.display = 'none';
     };
-    if (!emoji_select.contains(e.target)) {
-        emoji_list_wrapper.style.display = 'none';
+    if (!emoji_select.contains(e.target) && !emoji_wrapper.contains(e.target)) {
+        emoji_wrapper.style.display = 'none';
     };
     if (!selected_circle && !edit_popup) {
         edit_popups.forEach(popup => {
@@ -44,14 +60,21 @@ window.addEventListener('click', (e) => {
 
 
 emoji_select.addEventListener('click',() => {
-    emoji_list_wrapper.style.display = 'block'
+    if(emoji_wrapper.style.display == 'block'){
+        emoji_wrapper.style.display = 'none';
+    }else{
+        emoji_wrapper.style.display = 'block';
+    }
 })
 
-emoji_options.forEach(option => {
-    option.addEventListener('click', () => {
-        emoji_select.value = option.innerHTML;
-        emoji_list_wrapper.style.display = 'none';
-    })
+emoji_slider.addEventListener('input', () => update_emojis(+emoji_slider.value))
+
+submit.addEventListener('click',()=>{
+    emoji_select.value = emojis[(+emoji_slider.value)-1];
+    emoji_wrapper.style.display = 'none';
+})
+cancel.addEventListener('click',()=>{
+    emoji_wrapper.style.display = 'none';
 })
 
 edit_btn.addEventListener('click',()=>{
@@ -211,13 +234,18 @@ function setToDoData() {
 
 submit_btn.addEventListener('click', async () => {
     // get all data
+    let currentMood = 0;
     let currentStudyTime = 0;
     if(study_select.textContent.includes("mins")){
         currentStudyTime = parseFloat(study_select.textContent)/60;
     } else {
         currentStudyTime = parseFloat(study_select.textContent);
     }
-    const currentMood = emoji_select.value;
+    emojis.forEach((emoji,i)=>{
+        if(emoji === emoji_select.value){
+            currentMood = i+1;
+        }
+    })
     const currentToDoList = setToDoData();
     // need to get daily goals
 
@@ -225,7 +253,7 @@ submit_btn.addEventListener('click', async () => {
     if (currentToDoList === null) return;
 
     // check if mood has been selected
-    if (currentMood === "") {
+    if (currentMood === 0) {
         showNotification("Please select a mood");
         return;
     }
@@ -304,15 +332,15 @@ async function updateGoals(){
             const percentage = Math.min(Math.round((actual_value/target)*100),100);
             if (goal_id !== 'steps') {
                 if(target !== 1){
-                    inside_circle.innerHTML = `${actual_value}hrs`;
+                    inside_circle.innerHTML = `${Number(actual_value).toFixed(2)}hrs`;
                     edit_popup_p.innerHTML = `Current goal: ${target} hours`;
                 } else {
                     inside_circle.innerHTML = `${actual_value}hr`;
                     edit_popup_p.innerHTML = `Current goal: ${target} hour`;
                 }
-                completion.innerHTML = `${current_data[goal_id]}/${target} hours completed`;
+                completion.innerHTML = `${Number(current_data[goal_id]).toFixed(2)}/${target} hours completed`;
                 if(difference>0){
-                    remaining.innerHTML = `Remaining: ${difference} hours`
+                    remaining.innerHTML = `Remaining: ${Number(difference).toFixed(2)} hours`
                 } else {
                     remaining.innerHTML = `Remaining: 0 hours`
                 }
@@ -362,4 +390,9 @@ async function updateToDo(){
             toDoRows[i].querySelector('input[type="text"]').value = task;
         }
     })
+}
+function update_emojis(value){
+    const index = value - 1
+    emoji_display.innerHTML = emojis[index]
+    emoji_label.innerHTML = emoji_labels[index]
 }
