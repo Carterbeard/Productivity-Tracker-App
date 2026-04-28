@@ -5,9 +5,9 @@ public class graphingVar {
     private String date ;
     private String vars;
 
-    public graphingVar(String date, String variables){
+    public graphingVar(String date, String vars){
         this.date = date;
-        this.vars = variables;
+        this.vars = vars;
     }
 
     public String getDate() {

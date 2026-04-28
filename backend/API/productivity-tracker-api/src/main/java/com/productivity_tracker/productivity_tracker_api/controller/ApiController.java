@@ -6,23 +6,20 @@ import com.productivity_tracker.productivity_tracker_api.repository.MoodReposito
 import com.productivity_tracker.productivity_tracker_api.repository.GoalRepository;
 import com.productivity_tracker.productivity_tracker_api.repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class api_controller {
+public class ApiController {
 
     @Autowired
     private DaysRepository daysRepository;
-
     @Autowired
     private MoodRepository moodRepository;
-
     @Autowired
     private GoalRepository goalRepository;
-
     @Autowired
     private ToDoRepository todoRepository;
 
@@ -33,7 +30,7 @@ public class api_controller {
     }
 
     @PostMapping("/set/day")
-    public void set_day(@RequestBody Days day) {
+    public void set_day(@RequestBody @NonNull Days day) {
         daysRepository.save(day);
     }
 
@@ -43,7 +40,7 @@ public class api_controller {
     }
 
     @PostMapping("/set/mood")
-    public void set_mood(@RequestBody Mood mood) {
+    public void set_mood(@RequestBody @NonNull Mood mood) {
         moodRepository.save(mood);
     }
 
@@ -53,17 +50,17 @@ public class api_controller {
     }
 
     @PostMapping("/set/goal")
-    public void set_goal(@RequestBody Goal goal) {
+    public void set_goal(@RequestBody @NonNull Goal goal) {
         goalRepository.save(goal);
     }
 
     @GetMapping("/retrieve/goals/{dateSet}/{goalType}")
     public List<Goal> get_goals(@PathVariable String dateSet, @PathVariable String goalType) {
-        return goalRepository.findByDateSetAndGoalType(dateSet,goalType);
+        return goalRepository.findByDateSetAndGoalType(dateSet, goalType);
     }
 
     @PostMapping("/set/todo")
-    public void set_todo(@RequestBody ToDo todo) {
+    public void set_todo(@RequestBody @NonNull ToDo todo) {
         todoRepository.save(todo);
     }
 
@@ -74,10 +71,13 @@ public class api_controller {
 
     @PostMapping("/retrieve/graph/Data")
     public List<GraphData> get_data(@RequestBody List<String> dates) {
-        List<GraphData> Graph_Data= new ArrayList<>();
+        List<GraphData> Graph_Data = new ArrayList<>();
         List<Days> days = daysRepository.findByDateIn(dates);
         List<Mood> moods = moodRepository.findByDateIn(dates);
-        for (int i = 0; i<7; i++) {
+
+        int limit = Math.min(days.size(), moods.size());
+
+        for (int i = 0; i < limit; i++) {
             Days next_day = days.get(i);
             Mood next_mood = moods.get(i);
             GraphData Next_data = new GraphData(next_day.getDate(), next_day.getSteps(), next_day.getSleep(), next_day.getHoursStudied(), next_day.getScreenTime(), next_mood.getEmoji());

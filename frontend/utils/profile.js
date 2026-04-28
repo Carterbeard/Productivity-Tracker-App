@@ -30,24 +30,24 @@ function getDate(){
     const today = new Date();
     const day = String(today.getDate()).padStart(2,'0');
     const month = String(today.getMonth()+1).padStart(2,'0');
-    const year = String(today.getFullYear()).slice(-2);
-    const date = `${day}-${month}-${year}`;
-    return date;
+    const year = String(today.getFullYear());
+    const american_date = `${year}-${month}-${day}`;
+    return american_date;
 }
 
 
 function getDateBefore(date) {
-    const day   = Number(date.slice(0, 2));
-    const month = Number(date.slice(3, 5));
-    const year  = Number(date.slice(6, 8)) + 2000;
+    const year  = Number(date.slice(0, 4));
+    const month = Number(date.slice(5, 7));
+    const day   = Number(date.slice(8, 10));
 
     const d = new Date(year, month - 1, day);
     d.setDate(d.getDate() - 1);
 
     const newDay   = String(d.getDate()).padStart(2, '0');
     const newMonth = String(d.getMonth() + 1).padStart(2, '0');
-    const newYear  = String(d.getFullYear()).slice(-2);
-    return `${newDay}-${newMonth}-${newYear}`;
+    const newYear  = d.getFullYear();
+    return `${newYear}-${newMonth}-${newDay}`;
 }
 
 async function updateActions(){

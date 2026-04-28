@@ -1,6 +1,5 @@
 package com.productivity_tracker.productivity_tracker_api.model;
 
-import java.util.List;
 
 public class GraphData {
 

@@ -22,6 +22,7 @@ const profile_icon = document.querySelector('.profile_icon_container')
 document.addEventListener('DOMContentLoaded', () => {
     updateGoals();
     updateToDo();
+    updateGraph();
 });
 
 profile_icon.addEventListener('click',()=>{
@@ -260,8 +261,8 @@ submit_btn.addEventListener('click', async () => {
 
     // send data to db
     try{
-        for(const [i,to_do] of currentToDoList.entries()){
-            await setToDo(i+1,to_do.task,to_do.isComplete);
+        for(const to_do of currentToDoList.entries()){
+            await setToDo(to_do.task,to_do.isComplete);
         }
         await setCurrentData(5678,6,currentStudyTime,9);
         //!!!! these need to be change just placeholder numbers for now but these should be values got from the device api
@@ -280,9 +281,9 @@ function getDate(){
     const today = new Date();
     const day = String(today.getDate()).padStart(2,'0');
     const month = String(today.getMonth()+1).padStart(2,'0');
-    const year = String(today.getFullYear()).slice(-2);
-    const date = `${day}-${month}-${year}`;
-    return date;
+    const year = String(today.getFullYear());
+    const american_date = `${year}-${month}-${day}`;
+    return american_date;
 }
 function getTime(){
     const today = new Date();
@@ -396,3 +397,33 @@ function update_emojis(value){
     emoji_display.innerHTML = emojis[index]
     emoji_label.innerHTML = emoji_labels[index]
 }
+
+const sleep_check = document.getElementById('sleep_var');
+const steps_check = document.getElementById('steps_var')
+const study_check = document.getElementById('study_var')
+const screen_check = document.getElementById('screen_var')
+const mood_check = document.getElementById('mood_var')
+const checkBoxes = document.querySelectorAll('.goal_check')
+async function updateGraph(){
+    const sleepBool = sleep_check.checked;
+    const stepsBool = steps_check.checked;
+    const studyBool = study_check.checked;
+    const screenBool = screen_check.checked;
+    const moodBool = mood_check.checked;
+    const dataArray = [stepsBool,studyBool, sleepBool,screenBool,moodBool]
+    const american_date = getDate();
+    try {
+        generateGraph(american_date,dataArray)
+    } catch (error) {
+        console.error("error updating graph:", error)
+    }
+}
+
+checkBoxes.forEach(checkBox =>{
+    checkBox.addEventListener('click',()=>{
+        updateGraph();
+        setTimeout(() => {
+            document.getElementById("graph").src = `../../../backend/API/python_api/src/main/java/com/example/python_api/scripts/output/graph.png?t=${Date.now()}`;
+        }, 1000);
+    })
+})

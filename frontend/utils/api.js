@@ -1,8 +1,9 @@
-const API_URL = 'http://localhost:8080'
+const Database_API_URL = 'http://localhost:8080'
+const Python_API_URL = 'http://localhost:8081'
 
 async function getGoal(dateSet,goalType){
     //need to filter through date and goal
-    let response = await fetch(`${API_URL}/retrieve/goals/${dateSet}/${goalType}`);
+    let response = await fetch(`${Database_API_URL}/retrieve/goals/${dateSet}/${goalType}`);
     if(!response.ok){
         return 0; 
     }
@@ -23,7 +24,7 @@ async function setGoal(goal_type, target) {
     };
 
     try{
-        const response = await fetch(`${API_URL}/set/goal`,{
+        const response = await fetch(`${Database_API_URL}/set/goal`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(goal_data)
@@ -37,7 +38,7 @@ async function setGoal(goal_type, target) {
 }
 
 async function getCurrentData(date) {
-    let response = await fetch(`${API_URL}/retrieve/day/${date}`);
+    let response = await fetch(`${Database_API_URL}/retrieve/day/${date}`);
     if(!response.ok){
         throw new Error("Unable to fetch today's data");
     }
@@ -46,7 +47,9 @@ async function getCurrentData(date) {
     if (!text) return {};
     const data = JSON.parse(text);
 
+    
     if(data.length === 0) throw new Error("No data found");
+    
     return{
         screen_time: data.screenTime,
         study_time: data.hoursStudied,
@@ -65,7 +68,7 @@ async function setCurrentData(steps,sleep,hours_studied,screen_time){
     }
 
     try{
-        const response = await fetch(`${API_URL}/set/day`,{
+        const response = await fetch(`${Database_API_URL}/set/day`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(current_data)
@@ -79,7 +82,7 @@ async function setCurrentData(steps,sleep,hours_studied,screen_time){
 }
 
 async function getToDo(){
-    let response = await fetch(`${API_URL}/retrieve/todo`)
+    let response = await fetch(`${Database_API_URL}/retrieve/todo`)
     if(!response.ok){
         throw new Error("Unable to fetch the to-do list")
     }
@@ -88,16 +91,15 @@ async function getToDo(){
     return todos_array
 }
 
-async function setToDo(id,task,isComplete){
+async function setToDo(task,isComplete){
     const to_do_data = {
-        todoId: id,
         task: task,
-        dateSet: getDate(),
-        completed: isComplete
+        completed: isComplete,
+        dateSet: getDate()
     }
 
     try{
-        const response = await fetch(`${API_URL}/set/todo`,{
+        const response = await fetch(`${Database_API_URL}/set/todo`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(to_do_data)
@@ -118,7 +120,7 @@ async function setMood(emoji){
     }
 
     try{
-        const response = await fetch(`${API_URL}/set/mood`,{
+        const response = await fetch(`${Database_API_URL}/set/mood`,{
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(mood_data)
@@ -129,4 +131,28 @@ async function setMood(emoji){
     } catch(error){
         console.error("error saving mood", error)
     }
+}
+
+async function generateGraph(americanDate,boolArray) {
+    const boolString = boolArray.join(' ');
+    const graphData = {
+        date:americanDate,
+        vars:boolString
+    }
+    try{
+        const response = await fetch(`${Python_API_URL}/grapher`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(graphData)
+        })
+
+        if(response.ok){
+            console.log("Graph Generation triggered with:", graphData)
+        }
+    } catch(error){
+        console.error("error generating graph", error)
+    }
+    
 }

@@ -1,13 +1,20 @@
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import matplotlib.cm as cm
+import numpy as np
+from datetime import datetime
+
+
 import json
-import
+import sys
 from datetime import datetime
 
 bools = sys.argv[1]
-raw = sys.argv[2]
+show_metrics = bools.split()
 # ── LOAD YOUR JSON FILE ───────────────────────────────────────────────────────
 # Replace 'data.json' with your actual file path
-#with open("data.json", "r") as f:
-#    raw = json.load(f)
+with open(sys.argv[2], "r") as f:
+    raw = json.load(f)
 
 # ── AUTO-DETECT FORMAT ────────────────────────────────────────────────────────
 # Handles the two most common MySQL JSON export shapes:
@@ -35,9 +42,9 @@ raw = sys.argv[2]
 FIELD_MAP = {
     "date":        "date",
     "steps":       "steps",
-    "study_time":  "study_time",   # e.g. change "studytime" -> "study_time"
+    "hoursStudied":  "study_time",   # e.g. change "studytime" -> "study_time"
     "sleep":       "sleep",
-    "screen_time": "screen_time",
+    "screenTime": "screen_time",
     "mood":        "mood",
 }
 
@@ -117,9 +124,130 @@ mood        = [to_int(v)   for v in mood]
 #   from json_converter import dates, steps, study_time, sleep, screen_time, mood
 
 print(f"Loaded {len(dates)} rows")
-print(f"  Date range : {dates[0]}  →  {dates[-1]}")
+if len(dates) > 0:
+    print(f"  Date range : {dates[0]}  -  {dates[-1]}")
+else:
+    print("No data found for the selected dates. Skipping graph generation.")
 print(f"  Steps      : {steps[:3]} ...")
 print(f"  Study time : {study_time[:3]} ...")
 print(f"  Sleep      : {sleep[:3]} ...")
 print(f"  Screen time: {screen_time[:3]} ...")
 print(f"  Mood       : {mood[:3]} ...")
+
+
+
+#        (steps, study_time, sleep, screen_time, mood)
+#show_metrics = [True, True, True, True, False]
+
+def normalise(data):
+    vals = [v for v in data if v is not None]
+    if not vals:
+        return data
+    min_v, max_v = min(vals), max(vals)
+    if min_v == max_v:
+        return [0.5 for _ in data]  # avoid divide by zero
+    return [(v - min_v) / (max_v - min_v) if v is not None else None for v in data]
+
+def plot_graph(dates,steps,study_time,sleep,screen_time,mood,show_metrics):
+    date_objs = [datetime.strptime(d, "%Y-%m-%d") for d in dates]
+
+    # ── METRIC DEFINITIONS ────────────────────────────────────────────────────────
+
+    metrics = [
+        {"label": "Steps",        "data": steps,       "color": "#4C72B0", "ylabel": "Steps"},
+        {"label": "Study Time",   "data": study_time,  "color": "#F90707", "ylabel": "Hours"},
+        {"label": "Sleep",        "data": sleep,       "color": "#00FFEA", "ylabel": "Hours"},
+        {"label": "Screen Time",  "data": screen_time, "color": "#FFEE00", "ylabel": "Hours"},
+    ]
+
+    # ── PLOT ──────────────────────────────────────────────────────────────────────
+
+    fig, ax = plt.subplots(figsize=(13, 6))
+    fig.patch.set_facecolor("#2e2e2e")
+    ax.set_facecolor("#2e2e2e")
+
+    plotted_any = False
+
+    # -- Line metrics (indices 0–3) ------------------------------------------------
+    for i, metric in enumerate(metrics):
+        if show_metrics[i] != "true":
+            continue
+        ax.plot(
+            date_objs,
+            normalise(metric["data"]),
+            label=metric["label"],
+            color=metric["color"],
+            linewidth=2,
+            marker="o",
+            markersize=5,
+            zorder=3,
+        )
+        plotted_any = True
+
+    # -- Mood as coloured background scatter / hue band (index 4) -----------------
+    if show_metrics[4] == "true" :
+        norm = plt.Normalize(vmin=1, vmax=5)
+        cmap = cm.get_cmap("RdYlGn")  # red (low) → yellow → green (high)
+
+        # Draw vertical colour bands between consecutive dates
+        for i in range(len(date_objs) - 1):
+            mid_mood = (mood[i] + mood[i + 1]) / 2
+            ax.axvspan(
+                date_objs[i], date_objs[i + 1],
+                alpha=0.18,
+                color=cmap(norm(mid_mood)),
+                zorder=1,
+            )
+
+        # Scatter dots coloured by mood on the x-axis baseline area
+        sc = ax.scatter(
+            date_objs,
+            [ax.get_ylim()[0]] * len(date_objs),  # will be updated after lines drawn
+            c=mood,
+            cmap=cmap,
+            norm=norm,
+            s=80,
+            zorder=4,
+            label="Mood (colour)",
+            edgecolors="white",
+            linewidths=0.5,
+            )
+
+        cbar = plt.colorbar(sc, ax=ax, pad=0.02)
+        cbar.set_label("Mood (1–5)", color="white", fontsize=11)
+        cbar.ax.yaxis.set_tick_params(color="white")
+        plt.setp(cbar.ax.yaxis.get_ticklabels(), color="white")
+        cbar.outline.set_edgecolor("#444")
+        plotted_any = True
+
+    # ── STYLING ───────────────────────────────────────────────────────────────────
+
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+    ax.xaxis.set_major_locator(mdates.DayLocator())
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha="right", color="white")
+    plt.setp(ax.yaxis.get_majorticklabels(), color="white")
+
+    ax.set_xlabel("Date", color="white", fontsize=12)
+    ax.set_ylabel("Value", color="white", fontsize=12)
+
+    ax.tick_params(colors="white", which="both")
+    for spine in ax.spines.values():
+        spine.set_edgecolor("#444")
+
+    ax.grid(color="#333", linestyle="--", linewidth=0.6, zorder=0)
+
+    if plotted_any:
+        legend = ax.legend(
+            facecolor="#3EEC95",
+            edgecolor="#444",
+            labelcolor="white",
+            fontsize=8,
+            loc="upper right",
+        )
+
+    plt.tight_layout()
+    plt.savefig("output/graph.png", dpi=150, bbox_inches="tight", facecolor=fig.get_facecolor())
+    #plt.show()
+    print("Plot saved to metrics_plot.png")
+    print("Graph saved successfully")
+plot_graph(dates,steps,study_time,sleep,screen_time,mood,show_metrics)

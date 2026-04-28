@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.lang.ProcessBuilder;
 
 
@@ -12,14 +11,16 @@ import java.lang.ProcessBuilder;
 public class pythonService {
 
     public void python_runner(String values, String data) throws IOException,InterruptedException {
-        ProcessBuilder Runner = new ProcessBuilder("py","Python_Grapher.py",values, data);
-        Runner.directory(new File("C:\\Uni\\Programming 2\\Productivity-Tracker-App\\python_api\\src\\main\\java\\com\\example\\python_api\\scripts"));
+        ProcessBuilder Runner = new ProcessBuilder("python","Python_Grapher.py",values, data);
+        Runner.directory(new File("/Users/carterbeard/Desktop/Year 1 CS/CourseWork/Group Java/ProductivityTrackerApp/backend/API/python_api/src/main/java/com/example/python_api/scripts"));
         Runner.redirectErrorStream(true);
         Process run = Runner.start();
         String output = new String (run.getInputStream().readAllBytes());
         run.waitFor();
         if (output.isEmpty()) {
-            System.out.println( "Output is empty");
+            System.out.println("Python output is empty");
+        } else {
+            System.out.println("Python output:\n" + output);
         }
     }
 }
