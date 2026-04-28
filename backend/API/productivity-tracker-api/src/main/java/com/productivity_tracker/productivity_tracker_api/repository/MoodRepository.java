@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface MoodRepository extends JpaRepository<Mood, Long> {
     List<Mood> findByDate(String date);
+    List<Mood> findByDateIn(List<String> dates);
 }
