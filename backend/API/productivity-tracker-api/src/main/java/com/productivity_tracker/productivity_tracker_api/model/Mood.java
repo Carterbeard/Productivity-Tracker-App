@@ -10,11 +10,11 @@ public class Mood {
     private String date;
     @Id
     private String time;
-    private String emoji;
+    private int emoji;
 
     public Mood() {}
 
-    public Mood(String date, String time, String emoji) {
+    public Mood(String date, String time, int emoji) {
         this.date = date;
         this.time = time;
         this.emoji = emoji;
@@ -22,12 +22,11 @@ public class Mood {
 
     public String getDate() { return date; }
     public String getTime() { return time; }
-    public String getEmoji() { return emoji; }
+    public int getEmoji() { return emoji; }
 
     public void setDate(String date) { this.date = date; }
     public void setTime(String time) { this.time = time; }
-    public void setEmoji(String emoji) {
-        if(emoji == null || emoji.isEmpty()) throw new IllegalArgumentException("Emoji can't be empty");
+    public void setEmoji(int emoji) {
         this.emoji = emoji;
     }
 }
