@@ -18,13 +18,13 @@ const submit_btn = document.getElementById('submit_btn');
 const sync_btn = document.getElementById('sync_btn');
 const submit_edit_btns = document.querySelectorAll('.submit_edit');
 const profile_icon = document.querySelector('.profile_icon_container');
-const checkLoadingScreen = false;
+const welcomeScreen = document.getElementById("welcome_screen");
 
 document.addEventListener('DOMContentLoaded', () => {
     updateGoals();
     updateToDo();
-    if (!checkLoadingScreen) {
-        const welcomeScreen = document.getElementById("welcome_screen");
+    let check_loading_screen = sessionStorage.getItem('check_loading_screen');
+    if (check_loading_screen !== 'true') {
         const quotesDiv = document.querySelector(".quotes");
 
         const quotes = [
@@ -36,6 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         quotesDiv.innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
+        let f_name = localStorage.getItem('first_name');
+
+        if (f_name) {
+            const welcome_title = document.querySelector(".welcome_title");
+            welcome_title.innerText = "Welcome back " + f_name + "!";
+        }
         setTimeout(() => {
             welcomeScreen.style.opacity = "0";
             welcomeScreen.style.visibility = "hidden";
@@ -44,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 welcomeScreen.remove();
             }, 800);
         }, 1300);
-        checkLoadingScreen = true;
+        sessionStorage.setItem('check_loading_screen',true);
+    } else {
+        welcomeScreen.remove();
     }
 });
 
@@ -342,7 +350,7 @@ submit_edit_btns.forEach(submit_edit_btn =>{
 async function updateGoals(){
     goal_ids = ['sleep','steps','study_time','screen_time'];
     const current_data = await getCurrentData(getDate());
-    for (const goal_id of goal_ids) {
+            for (const goal_id of goal_ids) {
         const goal_container = document.getElementById(goal_id);
         const inside_circle = goal_container.querySelector('.inner_circle');
         const completion = goal_container.querySelector('.completion')
