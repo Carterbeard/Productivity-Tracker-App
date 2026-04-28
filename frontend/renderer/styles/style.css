@@ -955,3 +955,54 @@ input[type=number]::-webkit-inner-spin-button {
     margin: 0;
     height: 50px;
 }
+
+/*
+---------------------------------
+            WELCOME ANIMATION
+---------------------------------
+*/
+
+#welcome_screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--g1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+
+.welcome_title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.quotes {
+    font-size: 1.2rem;
+    color: var(--g3);
+    margin-bottom: 40px;
+    min-height: 1.5rem;
+    font-style: italic;
+}
+
+.loading_spinner {
+    width: 45px;
+    height: 45px;
+    border: 5px solid var(--g2);
+    border-top: 5px solid var(--g3);
+    border-radius: 50%;
+    animation: spin 1.1s linear infinite;
+}
+
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(365deg);}
+}

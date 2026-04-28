@@ -16,12 +16,44 @@ const inner_circles = document.querySelectorAll('.inner_circle')
 const edit_popups = document.querySelectorAll('.edit_popup');
 const submit_btn = document.getElementById('submit_btn');
 const sync_btn = document.getElementById('sync_btn');
-const submit_edit_btns = document.querySelectorAll('.submit_edit')
-const profile_icon = document.querySelector('.profile_icon_container')
+const submit_edit_btns = document.querySelectorAll('.submit_edit');
+const profile_icon = document.querySelector('.profile_icon_container');
+const welcomeScreen = document.getElementById("welcome_screen");
 
 document.addEventListener('DOMContentLoaded', () => {
     updateGoals();
     updateToDo();
+    let check_loading_screen = sessionStorage.getItem('check_loading_screen');
+    if (check_loading_screen !== 'true') {
+        const quotesDiv = document.querySelector(".quotes");
+
+        const quotes = [
+            '“Small steps today build unstoppable momentum tomorrow.”',
+            '“Progress beats perfection—every single time.”',
+            '“Focus on what matters, and the rest will follow.”',
+            '“You don’t need more time—just more intention.”',
+            'Show up, start small, and keep going.”'
+        ];
+        quotesDiv.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+        let f_name = localStorage.getItem('first_name');
+
+        if (f_name) {
+            const welcome_title = document.querySelector(".welcome_title");
+            welcome_title.innerText = "Welcome back " + f_name + "!";
+        }
+        setTimeout(() => {
+            welcomeScreen.style.opacity = "0";
+            welcomeScreen.style.visibility = "hidden";
+
+            setTimeout(() => {
+                welcomeScreen.remove();
+            }, 800);
+        }, 1300);
+        sessionStorage.setItem('check_loading_screen',true);
+    } else {
+        welcomeScreen.remove();
+    }
     updateGraph();
 });
 
@@ -319,7 +351,7 @@ submit_edit_btns.forEach(submit_edit_btn =>{
 async function updateGoals(){
     goal_ids = ['sleep','steps','study_time','screen_time'];
     const current_data = await getCurrentData(getDate());
-    for (const goal_id of goal_ids) {
+            for (const goal_id of goal_ids) {
         const goal_container = document.getElementById(goal_id);
         const inside_circle = goal_container.querySelector('.inner_circle');
         const completion = goal_container.querySelector('.completion')
