@@ -718,6 +718,12 @@ input[type=number]::-webkit-inner-spin-button {
     cursor: pointer;
 }
 
+.graph_image{
+    height: 330px;
+    transform: translateY(20px);
+    width: 555px;
+}
+
 /* 
 --------------------------------
     NOTIFICATIONS AND TOASTS
